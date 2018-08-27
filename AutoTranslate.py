@@ -13,7 +13,6 @@ class Translate(object):
         self.keylist={'title','label','footerText'}
     #有道翻译接口
     def translate(self,content):
-
         '''
         翻译模块
         :param content: 传入英语
@@ -24,24 +23,26 @@ class Translate(object):
         client = 'fanyideskweb'
         ctime = int(time.time() * 1000)
         salt = str(ctime + random.randint(1, 10))
-        key = 'aNPG!!u6sesA>hBAW1@(-'
-        sign = hashlib.md5((client + content + salt + key).encode('utf-8')).hexdigest()
+        sign = sign = hashlib.md5(("fanyideskweb" + content + salt +
+                                   "ebSeFb%=XZ%T[KZ)c(sy!").encode('utf-8')).hexdigest()  # 22222
         # 表单数据
-        data = {}
-        data['i'] = content
-        data['from'] = 'EN'
-        data['to'] = 'zh-CHS'
-        data['smartresult'] = 'dict'
-        data['client'] = 'fanyideskweb'
-        data['salt'] = salt
-        data['sign'] = sign
-        data['doctype'] = 'json'
-        data['version'] = '2.1'
-        data['keyfrom'] = 'fanyi.web'
-        data['action'] = 'FY_BY_CL1CKBUTTON'
-        data['typoResult'] = 'false'
-        # 请求头
-        head = {}
+        data = {
+            "i": content,
+            "from": "AUTO",
+            "to": 'AUTO',
+            "smartresult": "dict",
+            "client": "fanyideskweb",
+            "salt": salt,
+            "sign": sign,
+            "doctype": "json",
+            "version": "2.1",
+            "keyfrom": "fanyi.web",
+            "action": "FY_BY_REALTIME",
+            "typoResult": "false",
+        }
+                # 请求头
+        head = {
+        }
         head['Accept'] = 'application/json, text/javascript, */*; q=0.01'
         head['Accept-Encoding'] = 'gzip, deflate'
         head['Accept-Language'] = 'zh-CN,zh;q=0.9'
@@ -53,11 +54,10 @@ class Translate(object):
         head['Host'] = 'fanyi.youdao.com'
         head['Origin'] = 'http://fanyi.youdao.com'
         head['Referer'] = 'http://fanyi.youdao.com/'
-        head['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5383.400 QQBrowser/10.0.1313.400'
+        head[
+            'User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
         head['X-Requested-With'] = 'XMLHttpRequest'
-
         request = requests.request('POST',url,data=data,headers=head)
-        # a=request.json()
         a=json.loads(request.text)
         result = a['translateResult'][0][0]['tgt']
         return result
@@ -84,37 +84,42 @@ class Translate(object):
             f.write(content)
         f.close()
     #遍历所有需要翻译的内容
-    def tranreplace(self,xml):
+    def tranreplace(self,content):
 
         '''
         遍历需要翻译的内容
         :param xml:
         :return:
         '''
-        tranxml=xml
+        print(content)
+        tranxml=content
         t=PrettyTable(["id","译前","译后"])
         id=1
         for item in self.keylist:
             rgxlable=r'<key>'+item+'</key>[^.](.*?)<string>(.*?)</string>'
-            title=re.findall(rgxlable,xml)
+            title=re.findall(rgxlable,content)
             for i in title:
                 newt=self.translate(i[1])
+                newt=newt.replace('&','')
+                newt=newt.replace('#','')
                 tranxml=tranxml.replace(i[1],newt)
                 t.add_row([str(id),i[1],newt])
                 id+=1
+                print(i[1],'----',newt)
         print(t)
         self.saveList(tranxml)
 
     def start(self):
-        try:
-            url=input('请输入需要翻译的文件路径:')
-            rgx=r'[a-zA-Z]+.plist'
-            self.filename=re.search(rgx,url).group()
-            print(self.filename)
-            content=self.readList(url)
-            self.tranreplace(content)
-        except Exception as e:
-            pass
+        url=input('请输入需要翻译的文件路径:').strip()
+        rgx=r'[a-zA-Z]+.plist'
+        self.filename=re.search(rgx,url).group()
+        content=self.readList(url)
+        self.tranreplace(content)
+# except Exception as e:
+#         try:
+#
+#             print(e)
+#             pass
 
 if __name__ == '__main__':
     print('*'*20)
