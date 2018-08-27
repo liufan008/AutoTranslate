@@ -5,10 +5,12 @@ import time
 import random
 import hashlib
 import requests
+from prettytable import PrettyTable
 
 class Translate(object):
     def __init__(self):
         self.filename=None
+        self.keylist={'title','label','footerText'}
     #有道翻译接口
     def translate(self,content):
 
@@ -90,21 +92,17 @@ class Translate(object):
         :return:
         '''
         tranxml=xml
-        rgxlable=r'<key>title</key>[^.](.*?)<string>(.*?)</string>'
-        title=re.findall(rgxlable,xml)
-        for i in title:
-            tranxml=tranxml.replace(i[1],self.translate(i[1]))
-        rgxlable=r'<key>label</key>[^.](.*?)<string>(.*?)</string>'
-        lable=re.findall(rgxlable,xml)
-        for i in lable:
-            tranxml=tranxml.replace(i[1],self.translate(i[1]))
-        rgxfooter=r'<key>footerText</key>[^.](.*?)<string>(.*?)</string>'
-        footerText=re.findall(rgxfooter,xml)
-        for i in footerText:
-            tranxml=tranxml.replace(i[1],self.translate(i[1]))
-            print(i[1],'-',self.translate(i[1]))
-
-        print(tranxml)
+        t=PrettyTable(["id","译前","译后"])
+        id=1
+        for item in self.keylist:
+            rgxlable=r'<key>'+item+'</key>[^.](.*?)<string>(.*?)</string>'
+            title=re.findall(rgxlable,xml)
+            for i in title:
+                newt=self.translate(i[1])
+                tranxml=tranxml.replace(i[1],newt)
+                t.add_row([str(id),i[1],newt])
+                id+=1
+        print(t)
         self.saveList(tranxml)
 
     def start(self):
@@ -113,8 +111,8 @@ class Translate(object):
             rgx=r'[a-zA-Z]+.plist'
             self.filename=re.search(rgx,url).group()
             print(self.filename)
-        # content=self.readList(url)
-        # self.tranreplace(content)
+            content=self.readList(url)
+            self.tranreplace(content)
         except Exception as e:
             pass
 
