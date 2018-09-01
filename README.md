@@ -7,5 +7,5 @@
 
 最重要的是:如果你觉得还可，帮忙点一下右上角的star。
 
-软件使用教程:链接: https://pan.baidu.com/s/1sC0ZIpuJ0sa1ujoyzq3rrw 密码: b9ab
+软件使用教程:链接: https://pan.baidu.com/s/1YH-Te8kKDx2IS2mbFrO9iA 密码: d6w5
 
