@@ -6,3 +6,6 @@
 注意：最好备份一下源文件，防止意外发生。
 
 最重要的是:如果你觉得还可，帮忙点一下右上角的star。
+
+软件使用教程:链接: https://pan.baidu.com/s/1sC0ZIpuJ0sa1ujoyzq3rrw 密码: b9ab
+
