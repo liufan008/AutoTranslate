@@ -1,5 +1,5 @@
 import tkinter
-import re
+import re,os
 import json
 import time
 import random
@@ -64,6 +64,7 @@ class Translate(object):
     #读取文件
     def readList(self,url):
 
+        print('url',url)
         xml=''
         #read txt method three
         f = open(url,"r")
@@ -80,7 +81,10 @@ class Translate(object):
         :param content:
         :return:
         '''
-        with open(self.filename,'w') as f:
+        folder=os.path.exists('tran')
+        if not folder:
+            os.makedirs('tran')
+        with open('tran/'+self.filename,'w') as f:
             f.write(content)
         f.close()
     #遍历所有需要翻译的内容
@@ -112,14 +116,25 @@ class Translate(object):
     def start(self):
         url=input('请输入需要翻译的文件路径:').strip()
         rgx=r'[a-zA-Z]+.plist'
-        self.filename=re.search(rgx,url).group()
-        content=self.readList(url)
-        self.tranreplace(content)
-# except Exception as e:
-#         try:
-#
-#             print(e)
-#             pass
+        self.filename=re.search(rgx,url)
+        if self.filename:
+            print('单个文件')
+            self.filename=self.filename.group()
+            content=self.readList(url)
+            self.tranreplace(content)
+        else:
+            if url[-1:]!='/':
+                url=r=url+'/'
+            files = os.listdir(url)
+            for i in files:
+                self.filename=re.search(rgx,i)
+                if  self.filename:
+                    print(i)
+
+                    self.filename=self.filename.group()
+                    print(self.filename)
+                    # content=self.readList(url+self.filename)
+                    # self.tranreplace(content)
 
 if __name__ == '__main__':
     print('*'*20)
