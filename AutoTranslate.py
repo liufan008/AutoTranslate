@@ -127,6 +127,7 @@ class Translate(object):
             if url[-1:]!='/':
                 url=r=url+'/'
             files = os.listdir(url)
+
             for i in files:
                 self.filename=re.search(rgx,i)
                 print(i)
