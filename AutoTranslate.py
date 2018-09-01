@@ -115,7 +115,7 @@ class Translate(object):
 
     def start(self):
         url=input('请输入需要翻译的文件路径:').strip()
-        rgx=r'[a-zA-Z]+.plist'
+        rgx=r'[a-zA-Z0-9]+.plist'
         self.filename=re.search(rgx,url)
         if self.filename:
             print('单个文件')
@@ -123,18 +123,18 @@ class Translate(object):
             content=self.readList(url)
             self.tranreplace(content)
         else:
+            print('多个文件')
             if url[-1:]!='/':
                 url=r=url+'/'
             files = os.listdir(url)
             for i in files:
                 self.filename=re.search(rgx,i)
+                print(i)
                 if  self.filename:
-                    print(i)
-
                     self.filename=self.filename.group()
                     print(self.filename)
-                    # content=self.readList(url+self.filename)
-                    # self.tranreplace(content)
+                    content=self.readList(url+self.filename)
+                    self.tranreplace(content)
 
 if __name__ == '__main__':
     print('*'*20)
