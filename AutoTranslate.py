@@ -63,8 +63,6 @@ class Translate(object):
         return result
     #读取文件
     def readList(self,url):
-
-        print('url',url)
         xml=''
         #read txt method three
         f = open(url,"r")
@@ -81,10 +79,11 @@ class Translate(object):
         :param content:
         :return:
         '''
-        folder=os.path.exists('tran')
+        uri=os.path.dirname(os.path.realpath(__file__))
+        folder=os.path.exists(uri+'/tran')
         if not folder:
-            os.makedirs('tran')
-        with open('tran/'+self.filename,'w') as f:
+            os.makedirs(uri+'/tran')
+        with open(uri+'/tran/'+self.filename,'w') as f:
             f.write(content)
         f.close()
     #遍历所有需要翻译的内容
@@ -95,7 +94,6 @@ class Translate(object):
         :param xml:
         :return:
         '''
-        print(content)
         tranxml=content
         t=PrettyTable(["id","译前","译后"])
         id=1
@@ -118,28 +116,31 @@ class Translate(object):
         rgx=r'[a-zA-Z0-9]+.plist'
         self.filename=re.search(rgx,url)
         if self.filename:
-            print('单个文件')
             self.filename=self.filename.group()
             content=self.readList(url)
+
             self.tranreplace(content)
         else:
-            print('多个文件')
             if url[-1:]!='/':
                 url=r=url+'/'
             files = os.listdir(url)
 
             for i in files:
                 self.filename=re.search(rgx,i)
-                print(i)
                 if  self.filename:
                     self.filename=self.filename.group()
-                    print(self.filename)
                     content=self.readList(url+self.filename)
                     self.tranreplace(content)
 
 if __name__ == '__main__':
     print('*'*20)
-    print('感谢使用')
+    print('感谢使用,欢迎关注微信公众号：千寻论')
+    print('主要分享越狱插件美化等，还有自己开源的一些工具，还有一些实用的教程，本来自己留作备份，现免费分享出来')
     print('*'*20)
     tran=Translate()
     tran.start()
+    print('*'*20)
+    print('翻译结束，请前往程序目录线tran查看翻译结果')
+    print('如有问题可添加我的微信公众号:千寻论，在里面回复问题，免费解答。')
+    print('*'*20)
+
