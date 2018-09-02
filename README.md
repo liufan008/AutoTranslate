@@ -7,5 +7,8 @@
 
 最重要的是:如果你觉得还可，帮忙点一下右上角的star。
 
-软件使用教程:链接: https://pan.baidu.com/s/1YH-Te8kKDx2IS2mbFrO9iA 密码: d6w5
+工具使用教程:链接: https://pan.baidu.com/s/1FRekayZQgGYe9qvwkjIjNg密码: 2xgh
+
+
+如果有什么问题，可以加我的个人微信公众号：千寻论 ，直接回复你的问题，看到第一时间会给回复
 
