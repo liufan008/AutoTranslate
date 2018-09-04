@@ -101,13 +101,19 @@ class Translate(object):
             rgxlable=r'<key>'+item+'</key>[^.](.*?)<string>(.*?)</string>'
             title=re.findall(rgxlable,content)
             for i in title:
-                newt=self.translate(i[1])
-                newt=newt.replace('&','')
-                newt=newt.replace('#','')
-                tranxml=tranxml.replace(i[1],newt)
-                t.add_row([str(id),i[1],newt])
-                id+=1
-                print(i[1],'----',newt)
+                print('需要翻译的内容:',i[1])
+                if i[1]!='':
+                    try:
+                        newt=self.translate(i[1])
+                        newt=newt.replace('&','')
+                        newt=newt.replace('#','')
+                        tranxml=tranxml.replace(i[1],newt)
+                        t.add_row([str(id),i[1],newt])
+                        id+=1
+                        print(i[1],'----',newt)
+                    except:
+                        pass
+
         print(t)
         self.saveList(tranxml)
 
@@ -119,7 +125,11 @@ class Translate(object):
             self.filename=self.filename.group()
             content=self.readList(url)
 
-            self.tranreplace(content)
+            print(content)
+            try:
+                self.tranreplace(content)
+            except:
+                pass
         else:
             if url[-1:]!='/':
                 url=r=url+'/'
