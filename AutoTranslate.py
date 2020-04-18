@@ -144,7 +144,6 @@ class Translate(object):
 
 if __name__ == '__main__':
     print('*'*20)
-    print('感谢使用,欢迎关注微信公众号：千寻论')
     print('主要分享越狱插件美化等，还有自己开源的一些工具，还有一些实用的教程，本来自己留作备份，现免费分享出来')
     print('*'*20)
     tran=Translate()
